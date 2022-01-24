@@ -1,6 +1,6 @@
 ## Simulation to assess deduplication performance for different parameter configurations ##
 ## No duplicates in data ##
-## Last updated: August 19, 2021 ##
+## Last updated: January 11, 2022 ##
 
 
 a1 <- as.integer(Sys.getenv('SLURM_ARRAY_TASK_ID'))
@@ -93,7 +93,7 @@ for(ii in rows){
   it <- res.param.nothresh$iter[ii]
   
   ## deduplicating
-  res.dup <- bsn(pedigrees = dat.nodup, requestID = "RequestID",
+  res.dup <- snip(pedigrees = dat.nodup, requestID = "RequestID",
                  isProband = "isProband",
                  keyVars = keyVars, keyVars.female = keyVars.female,
                  keyWt = NULL, blockVar = NULL, repSN = reps, windowSN = nbs,
@@ -102,6 +102,7 @@ for(ii in rows){
                  priority = list(var = "AgeBC", min = TRUE),
                  seed = 99 * a1 + ii)
   
+  ## assessing results
   res.metrics <- summaryMetrics(res.dup, "RequestID", "FamID",
                                 thresh.i, thresh.g)
   
