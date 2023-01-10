@@ -1,6 +1,6 @@
 ## Simulation on effect of deduplication
 ## Allele frequency of 0.01
-## Last updated: August 18, 2021
+## Last updated: January 10, 2023
 
 library(tidyverse)
 library(data.table)
@@ -491,11 +491,16 @@ metrics.mean <- rbind(oe.mean$cv %>% mutate(metric = "O/E", type = "CV with dupl
                       rbs.mean$val.ext %>% mutate(metric = "rBS", type = "Train with duplicates, validate without duplicates"),
                       rbs.mean$train.ext %>% mutate(metric = "rBS", type = "Train without duplicates, validate with duplicates"))
 
+library(scales)
+
 ggplot(metrics.mean, aes(pDup, value)) +
   geom_line(aes(color = factor(pFH))) +
-  geom_point(aes(color = factor(pFH))) +
+  geom_point(aes(color = factor(pFH), shape = factor(pFH))) +
   labs(x = "Proportion of families in original data with duplicates", y = "") +
-  scale_color_discrete(name = "Among duplicates,\nproportion with \nextensive family \nhistory") +
+  scale_color_manual(name = "Among duplicates,\nproportion with \nextensive family \nhistory",
+                     values = hue_pal()(6)) +
+  scale_shape_manual(name = "Among duplicates,\nproportion with \nextensive family \nhistory",
+                     values = c(16, 17, 15, 3, 7, 8)) +
   facet_grid(factor(metric, levels = c("O/E", "AUC", "rBS")) ~ type,
              scales = "free",
              switch = "y") +

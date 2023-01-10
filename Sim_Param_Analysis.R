@@ -1,5 +1,5 @@
 ## Sim Param Analysis ##
-## Last Updated: August 18, 2021 ##
+## Last Updated: January 10, 2023 ##
 
 library(snipR)
 library(tidyverse)
@@ -83,33 +83,43 @@ ggplot(res.long %>% filter(threshold %in% 4:7,
              labeller = labeller(keyLength = function(x) paste0("Key length: ", x),
                                  threshold = function(x) paste0("Threshold: ", x)))
 
+library(scales)
+
 ggplot(res.long %>% filter(threshold %in% 4:7, metric == "pairF1"), aes(numNeighbors, value)) +
   geom_line(aes(color = factor(snReps))) +
-  geom_point(aes(color = factor(snReps)), size = 1) +
+  geom_point(aes(color = factor(snReps), shape = factor(snReps)), size = 3) +
   labs(y = "Pairwise F1", x = "Sliding window size") +
-  scale_color_discrete(name = "Number of sort \nkey iterations") +
+  scale_color_manual(name = "Number of sort \nkey iterations", values = hue_pal()(3)) +
+  scale_shape_manual(name = "Number of sort \nkey iterations", values = c(16, 17, 15)) +
   scale_linetype_discrete(name = "Metric") +
   facet_grid(keyLength ~ threshold,
              labeller = labeller(keyLength = function(x) paste0("Key length: ", x),
-                                 threshold = function(x) paste0("Threshold: ", x)))
+                                 threshold = function(x) paste0("Threshold: ", x))) +
+  theme(text = element_text(size = 20))
+
 ggplot(res.long %>% filter(threshold %in% 4:7, metric == "clusterF1"), aes(numNeighbors, value)) +
   geom_line(aes(color = factor(snReps))) +
-  geom_point(aes(color = factor(snReps)), size = 1) +
+  geom_point(aes(color = factor(snReps), shape = factor(snReps)), size = 3) +
   labs(y = "Cluster F1", x = "Sliding window size") +
-  scale_color_discrete(name = "Number of sort \nkey iterations") +
+  scale_color_manual(name = "Number of sort \nkey iterations", values = hue_pal()(3)) +
+  scale_shape_manual(name = "Number of sort \nkey iterations", values = c(16, 17, 15)) +
   scale_linetype_discrete(name = "Metric") +
   facet_grid(keyLength ~ threshold,
              labeller = labeller(keyLength = function(x) paste0("Key length: ", x),
-                                 threshold = function(x) paste0("Threshold: ", x)))
+                                 threshold = function(x) paste0("Threshold: ", x))) +
+  theme(text = element_text(size = 20))
+
 ggplot(res.long %>% filter(threshold %in% 4:7, metric == "GMD"), aes(numNeighbors, value)) +
   geom_line(aes(color = factor(snReps))) +
-  geom_point(aes(color = factor(snReps)), size = 1) +
+  geom_point(aes(color = factor(snReps), shape = factor(snReps)), size = 3) +
   labs(y = "GMD", x = "Sliding window size") +
-  scale_color_discrete(name = "Number of sort \nkey iterations") +
+  scale_color_manual(name = "Number of sort \nkey iterations", values = hue_pal()(3)) +
+  scale_shape_manual(name = "Number of sort \nkey iterations", values = c(16, 17, 15)) +
   scale_linetype_discrete(name = "Metric") +
   facet_grid(keyLength ~ threshold,
              labeller = labeller(keyLength = function(x) paste0("Key length: ", x),
-                                 threshold = function(x) paste0("Threshold: ", x)))
+                                 threshold = function(x) paste0("Threshold: ", x))) +
+  theme(text = element_text(size = 20))
 
 
 ## Plotting runtimes
